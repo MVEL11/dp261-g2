@@ -43,17 +43,40 @@ st.markdown("""
 
 .main {
     background-color: #0E1117;
+<<<<<<< HEAD
     color: white;
 }
 
 h1, h2, h3, h4 {
     color: white;
+=======
+    color: #F8FAFC;
+}
+
+h1, h2, h3, h4 {
+    color: #F8FAFC;
+>>>>>>> upstream/main
 }
 
 [data-testid="stSidebar"] {
     background-color: #1E1E2F;
 }
 
+<<<<<<< HEAD
+=======
+/* Títulos sidebar */
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3,
+[data-testid="stSidebar"] h4,
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] span,
+[data-testid="stSidebar"] div {
+    color: #F8FAFC !important;
+}
+
+>>>>>>> upstream/main
 .kpi-card {
     background-color: #1C2333;
     padding: 20px;
@@ -70,7 +93,11 @@ h1, h2, h3, h4 {
 .kpi-value {
     font-size: 34px;
     font-weight: bold;
+<<<<<<< HEAD
     color: white;
+=======
+    color: #F8FAFC;
+>>>>>>> upstream/main
 }
 
 .block-container {
@@ -99,12 +126,20 @@ h1, h2, h3, h4 {
     font-size: 22px;
     font-weight: bold;
     margin-bottom: 15px;
+<<<<<<< HEAD
     color: white;
+=======
+    color: #F8FAFC;
+>>>>>>> upstream/main
 }
 .card-text {
     font-size: 16px;
     margin-bottom: 10px;
+<<<<<<< HEAD
     color: white;
+=======
+    color: #F8FAFC;
+>>>>>>> upstream/main
 }
 
 </style>
@@ -138,24 +173,37 @@ st.markdown("""
         font-size: 22px;
         font-weight: bold;
         margin-bottom: 15px;
+<<<<<<< HEAD
         color: white;
+=======
+        color: #F8FAFC;
+>>>>>>> upstream/main
     }
 
     .card-text {
         font-size: 16px;
         margin-bottom: 10px;
+<<<<<<< HEAD
         color: white;
+=======
+        color: #F8FAFC;
+>>>>>>> upstream/main
     }
 
     </style>
     """, unsafe_allow_html=True)
 
 # =========================================================
+<<<<<<< HEAD
 # MODEL
+=======
+# MODELS
+>>>>>>> upstream/main
 # =========================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+<<<<<<< HEAD
 MODEL_PATH = (
     BASE_DIR
     / "models"
@@ -168,6 +216,23 @@ def load_model():
     return joblib.load(MODEL_PATH)
 
 model = load_model()
+=======
+XGB_MODEL_PATH = (
+    BASE_DIR
+    / "models"
+    / "xgboost.pkl"
+)
+
+RF_MODEL_PATH = (
+    BASE_DIR
+    / "models"
+    / "random_forest.pkl"
+)
+
+xgb_model = joblib.load(XGB_MODEL_PATH)
+
+rf_model = joblib.load(RF_MODEL_PATH)
+>>>>>>> upstream/main
 
 # =========================================================
 # CLEANING
@@ -267,6 +332,7 @@ threshold = st.sidebar.slider(
     0.35
 )
 
+<<<<<<< HEAD
 st.sidebar.write(
     f"Threshold actual: {threshold:.2f}"
 )
@@ -280,6 +346,43 @@ Threshold altos:
 ↓ Recall
 ↑ Precision
 """)
+=======
+# =========================================================
+# BUSINESS PARAMETERS
+# =========================================================
+
+st.sidebar.subheader(
+    "💰 Business Parameters"
+)
+
+ADR_PROMEDIO = st.sidebar.slider(
+    "ADR promedio",
+    50,
+    500,
+    102
+)
+
+EFECTIVIDAD_OPERATIVA = st.sidebar.slider(
+    "Efectividad operativa",
+    0.0,
+    1.0,
+    0.25
+)
+
+COSTO_FP = st.sidebar.slider(
+    "Costo por falso positivo",
+    0.0,
+    50.0,
+    5.0
+)
+
+BENEFICIO_TP = (
+    ADR_PROMEDIO
+    * EFECTIVIDAD_OPERATIVA
+)
+
+PERDIDA_FN = ADR_PROMEDIO
+>>>>>>> upstream/main
 
 # =========================================================
 # HEADER
@@ -380,14 +483,22 @@ else:
             )
 
             lead_time = st.slider(
+<<<<<<< HEAD
                 "⏳ Lead Time",
+=======
+                "⏳ Lead Time - días entre reserva y llegada",
+>>>>>>> upstream/main
                 0,
                 700,
                 120
             )
 
             adr = st.number_input(
+<<<<<<< HEAD
                 "💰 ADR",
+=======
+                "💰 ADR - Tarifa diaria promedio",
+>>>>>>> upstream/main
                 0.0,
                 1000.0,
                 120.0
@@ -449,6 +560,7 @@ else:
 
             st.markdown("## 👤 Cliente")
 
+<<<<<<< HEAD
             adults = st.slider(
                 "🧑 Adultos",
                 1,
@@ -468,6 +580,30 @@ else:
                 0,
                 2,
                 0
+=======
+            adults = st.number_input(
+                "🧑 Número de adultos",
+                min_value=1,
+                max_value=20,
+                value=2,
+                step=1
+            )
+
+            children = st.number_input(
+                "🧒 Número de niños",
+                min_value=0,
+                max_value=20,
+                value=0,
+                step=1
+            )
+
+            babies = st.number_input(
+                "👶 Número de bebés",
+                min_value=0,
+                max_value=20,
+                value=0,
+                step=1
+>>>>>>> upstream/main
             )
 
             is_repeated_guest = st.selectbox(
@@ -665,6 +801,7 @@ else:
 # =========================================================
 # PREDICTIONS
 # =========================================================
+<<<<<<< HEAD
 import requests
 import os
 
@@ -756,6 +893,100 @@ results["Probabilidad"] = np.round(
 
 results["Predicción"] = np.where(
     y_pred == 1,
+=======
+
+import requests
+import os
+
+API_URL = os.getenv(
+    "API_URL",
+    "http://34.204.98.17:8000"
+)
+
+def api_disponible():
+
+    try:
+
+        r = requests.get(
+            f"{API_URL}/health",
+            timeout=5
+        )
+
+        return r.status_code == 200
+
+    except Exception:
+
+        return False
+
+# =========================================================
+# XGBOOST
+# =========================================================
+
+try:
+
+    y_proba_xgb = xgb_model.predict_proba(
+        X_eval
+    )[:,1]
+
+except Exception as e:
+
+    st.error(f"Error XGBoost: {e}")
+    st.stop()
+
+y_pred_xgb = (
+    y_proba_xgb >= threshold
+).astype(int)
+
+# =========================================================
+# RANDOM FOREST
+# =========================================================
+
+try:
+
+    y_proba_rf = rf_model.predict_proba(
+        X_eval
+    )[:,1]
+
+except Exception as e:
+
+    st.error(f"Error Random Forest: {e}")
+    st.stop()
+
+y_pred_rf = (
+    y_proba_rf >= threshold
+).astype(int)
+
+# =========================================================
+# RESULTS XGB
+# =========================================================
+
+results_xgb = X_eval.copy()
+
+results_xgb["Probabilidad"] = np.round(
+    y_proba_xgb,
+    3
+)
+
+results_xgb["Predicción"] = np.where(
+    y_pred_xgb == 1,
+    "❌ Cancelará",
+    "✅ No cancelará"
+)
+
+# =========================================================
+# RESULTS RF
+# =========================================================
+
+results_rf = X_eval.copy()
+
+results_rf["Probabilidad"] = np.round(
+    y_proba_rf,
+    3
+)
+
+results_rf["Predicción"] = np.where(
+    y_pred_rf == 1,
+>>>>>>> upstream/main
     "❌ Cancelará",
     "✅ No cancelará"
 )
@@ -775,7 +1006,15 @@ def riesgo(p):
     else:
         return "🟢 Riesgo Bajo"
 
+<<<<<<< HEAD
 results["Nivel de Riesgo"] = results[
+=======
+results_xgb["Nivel de Riesgo"] = results_xgb[
+    "Probabilidad"
+].apply(riesgo)
+
+results_rf["Nivel de Riesgo"] = results_rf[
+>>>>>>> upstream/main
     "Probabilidad"
 ].apply(riesgo)
 
@@ -806,10 +1045,51 @@ def accion_recomendada(r):
             "✅ Flujo normal de atención"
         )
 
+<<<<<<< HEAD
 results["Acción Recomendada"] = results[
     "Nivel de Riesgo"
 ].apply(accion_recomendada)
 
+=======
+results_xgb["Acción Recomendada"] = results_xgb[
+    "Nivel de Riesgo"
+].apply(accion_recomendada)
+
+results_rf["Acción Recomendada"] = results_rf[
+    "Nivel de Riesgo"
+].apply(accion_recomendada)
+
+# =========================================================
+# BUSINESS VALUE
+# =========================================================
+
+from sklearn.metrics import confusion_matrix
+
+
+def calcular_business_value(y_true, y_pred):
+
+    tn, fp, fn, tp = confusion_matrix(
+        y_true,
+        y_pred
+    ).ravel()
+
+    gain = BENEFICIO_TP
+
+    business_value = (
+        gain * tp
+        -
+        COSTO_FP * (tp + fp)
+    )
+
+    return {
+        "TP": tp,
+        "FP": fp,
+        "FN": fn,
+        "Gain": gain,
+        "Business Value": business_value
+    }
+
+>>>>>>> upstream/main
 # =========================================================
 # COLORS
 # =========================================================
@@ -824,9 +1104,16 @@ risk_colors = {
 # TABS
 # =========================================================
 
+<<<<<<< HEAD
 tab1, tab2, tab3, tab4 = st.tabs([
     "📈 Resumen Ejecutivo",
     "🤖 Performance ML",
+=======
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "📈 Resumen Ejecutivo",
+    "🤖 Performance ML",
+    "💰 Business Value",
+>>>>>>> upstream/main
     "📋 Predicciones",
     "🔍 Explainability"
 ])
@@ -837,20 +1124,35 @@ tab1, tab2, tab3, tab4 = st.tabs([
 
 with tab1:
 
+<<<<<<< HEAD
     total = len(results)
 
     cancelaciones = (
         results["Predicción"]
+=======
+    total = len(results_xgb)
+
+    cancelaciones = (
+        results_xgb["Predicción"]
+>>>>>>> upstream/main
         ==
         "❌ Cancelará"
     ).sum()
 
+<<<<<<< HEAD
     riesgo_prom = results[
+=======
+    riesgo_prom = results_xgb[
+>>>>>>> upstream/main
         "Probabilidad"
     ].mean()
 
     pct_alto = (
+<<<<<<< HEAD
         results["Nivel de Riesgo"]
+=======
+        results_xgb["Nivel de Riesgo"]
+>>>>>>> upstream/main
         ==
         "🔴 Riesgo Alto"
     ).mean() * 100
@@ -892,17 +1194,29 @@ with tab1:
     )
 
     alto = (
+<<<<<<< HEAD
         results["Nivel de Riesgo"]
+=======
+        results_xgb["Nivel de Riesgo"]
+>>>>>>> upstream/main
         == "🔴 Riesgo Alto"
     ).sum()
 
     medio = (
+<<<<<<< HEAD
         results["Nivel de Riesgo"]
+=======
+        results_xgb["Nivel de Riesgo"]
+>>>>>>> upstream/main
         == "🟡 Riesgo Medio"
     ).sum()
 
     bajo = (
+<<<<<<< HEAD
         results["Nivel de Riesgo"]
+=======
+        results_xgb["Nivel de Riesgo"]
+>>>>>>> upstream/main
         == "🟢 Riesgo Bajo"
     ).sum()
 
@@ -930,7 +1244,11 @@ with tab1:
     with col1:
 
         fig_hist = px.histogram(
+<<<<<<< HEAD
             results,
+=======
+            results_xgb,
+>>>>>>> upstream/main
             x="Probabilidad",
             color="Nivel de Riesgo",
             template="plotly_dark",
@@ -940,27 +1258,61 @@ with tab1:
 
         fig_hist.update_layout(
             title="📈 Distribución de Probabilidades",
+<<<<<<< HEAD
             paper_bgcolor="#0E1117",
             plot_bgcolor="#0E1117"
+=======
+            title_x=0.25,
+            paper_bgcolor="#0E1117",
+            plot_bgcolor="#0E1117",
+            font=dict(color="#FFFFFF", size=14),
+            title_font=dict(color="#FFFFFF", size=20),
+
+            xaxis=dict(
+                title_font=dict(color="#FFFFFF"),
+                tickfont=dict(color="#FFFFFF")
+            ),
+
+            yaxis=dict(
+                title_font=dict(color="#FFFFFF"),
+                tickfont=dict(color="#FFFFFF")
+            ),
+
+            legend=dict(
+                font=dict(color="#FFFFFF")
+            )
+>>>>>>> upstream/main
         )
 
         st.plotly_chart(
             fig_hist,
+<<<<<<< HEAD
             width="stretch"
+=======
+            use_container_width=True
+>>>>>>> upstream/main
         )
 
     with col2:
 
         riesgo_counts = (
+<<<<<<< HEAD
             results["Nivel de Riesgo"]
+=======
+            results_xgb["Nivel de Riesgo"]
+>>>>>>> upstream/main
             .value_counts()
             .reset_index()
         )
 
+<<<<<<< HEAD
         riesgo_counts.columns = [
             "Nivel de Riesgo",
             "Cantidad"
         ]
+=======
+        riesgo_counts.columns = ["Nivel de Riesgo", "Cantidad"]
+>>>>>>> upstream/main
 
         fig_pie = px.pie(
             riesgo_counts,
@@ -974,12 +1326,28 @@ with tab1:
 
         fig_pie.update_layout(
             title="🥧 Distribución de Riesgo",
+<<<<<<< HEAD
             paper_bgcolor="#0E1117"
+=======
+            title_x=0.25,
+            paper_bgcolor="#0E1117",
+            font=dict(color="#FFFFFF", size=14),
+            title_font=dict(color="#FFFFFF", size=20),
+            legend=dict(font=dict(color="#FFFFFF"))
+        )
+
+        fig_pie.update_traces(
+            textfont=dict(color="#0008ff", size=14)
+>>>>>>> upstream/main
         )
 
         st.plotly_chart(
             fig_pie,
+<<<<<<< HEAD
             width="stretch"
+=======
+            use_container_width=True
+>>>>>>> upstream/main
         )
 # =========================================================
 # TAB 2
@@ -988,11 +1356,16 @@ with tab1:
 with tab2:
 
     st.subheader(
+<<<<<<< HEAD
         "🤖 Performance del Modelo"
+=======
+        "🤖 Comparación de Modelos"
+>>>>>>> upstream/main
     )
 
     if y_eval is not None:
 
+<<<<<<< HEAD
         accuracy = accuracy_score(
             y_eval,
             y_pred
@@ -1033,10 +1406,79 @@ with tab2:
         col4.metric(
             "📈 AUC ROC",
             f"{auc:.2%}"
+=======
+        # =====================================================
+        # METRICS
+        # =====================================================
+
+        metrics_df = pd.DataFrame({
+
+            "Métrica": [
+                "Accuracy",
+                "Recall",
+                "F1 Score",
+                "AUC ROC"
+            ],
+
+            "XGBoost": [
+
+                accuracy_score(
+                    y_eval,
+                    y_pred_xgb
+                ),
+
+                recall_score(
+                    y_eval,
+                    y_pred_xgb
+                ),
+
+                f1_score(
+                    y_eval,
+                    y_pred_xgb
+                ),
+
+                roc_auc_score(
+                    y_eval,
+                    y_proba_xgb
+                )
+            ],
+
+            "Random Forest": [
+
+                accuracy_score(
+                    y_eval,
+                    y_pred_rf
+                ),
+
+                recall_score(
+                    y_eval,
+                    y_pred_rf
+                ),
+
+                f1_score(
+                    y_eval,
+                    y_pred_rf
+                ),
+
+                roc_auc_score(
+                    y_eval,
+                    y_proba_rf
+                )
+            ]
+        })
+
+        st.dataframe(
+            metrics_df.style.format({
+                "XGBoost":"{:.2%}",
+                "Random Forest":"{:.2%}"
+            }),
+            width="stretch"
+>>>>>>> upstream/main
         )
 
         st.divider()
 
+<<<<<<< HEAD
         col1, col2 = st.columns(2)
 
         with col1:
@@ -1100,22 +1542,200 @@ with tab2:
 
             st.plotly_chart(
                 fig_roc,
+=======
+        # =====================================================
+        # ROC CURVES
+        # =====================================================
+
+        fpr_xgb, tpr_xgb, _ = roc_curve(
+            y_eval,
+            y_proba_xgb
+        )
+
+        fpr_rf, tpr_rf, _ = roc_curve(
+            y_eval,
+            y_proba_rf
+        )
+
+        fig_roc = go.Figure()
+
+        fig_roc.add_trace(
+            go.Scatter(
+                x=fpr_xgb,
+                y=tpr_xgb,
+                mode="lines",
+                name="XGBoost"
+            )
+        )
+
+        fig_roc.add_trace(
+            go.Scatter(
+                x=fpr_rf,
+                y=tpr_rf,
+                mode="lines",
+                name="Random Forest"
+            )
+        )
+
+        fig_roc.add_trace(
+            go.Scatter(
+                x=[0,1],
+                y=[0,1],
+                mode="lines",
+                line=dict(
+                    dash="dash"
+                ),
+                showlegend=False
+            )
+        )
+
+        fig_roc.update_layout(
+            template="plotly_dark",
+            title="📈 ROC Curve Comparison",
+            xaxis_title="False Positive Rate",
+            yaxis_title="True Positive Rate"
+        )
+
+        st.plotly_chart(
+            fig_roc,
+            width="stretch"
+        )
+
+        st.divider()
+
+        # =====================================================
+        # CONFUSION MATRICES
+        # =====================================================
+
+        st.subheader(
+            "🧩 Matrices de Confusión"
+        )
+
+        cm_xgb = confusion_matrix(
+            y_eval,
+            y_pred_xgb
+        )
+
+        cm_rf = confusion_matrix(
+            y_eval,
+            y_pred_rf
+        )
+
+        col1, col2 = st.columns(2)
+
+        # =========================================
+        # XGBOOST
+        # =========================================
+
+        with col1:
+
+            fig_cm_xgb = px.imshow(
+                cm_xgb,
+                text_auto=True,
+                color_continuous_scale="Blues",
+                labels=dict(
+                    x="Predicción",
+                    y="Valor Real",
+                    color="Cantidad"
+                ),
+                x=[
+                    "No Cancel",
+                    "Cancel"
+                ],
+                y=[
+                    "No Cancel",
+                    "Cancel"
+                ],
+                title="🎯 XGBoost"
+            )
+
+            fig_cm_xgb.update_layout(
+                template="plotly_dark",
+                paper_bgcolor="#0E1117",
+                plot_bgcolor="#0E1117",
+                font=dict(
+                    color="#FFFFFF",
+                    size=14
+                ),
+                title_font=dict(
+                    color="#FFFFFF",
+                    size=20
+                )
+            )
+
+            st.plotly_chart(
+                fig_cm_xgb,
+                width="stretch"
+            )
+
+        # =========================================
+        # RANDOM FOREST
+        # =========================================
+
+        with col2:
+
+            fig_cm_rf = px.imshow(
+                cm_rf,
+                text_auto=True,
+                color_continuous_scale="Greens",
+                labels=dict(
+                    x="Predicción",
+                    y="Valor Real",
+                    color="Cantidad"
+                ),
+                x=[
+                    "No Cancel",
+                    "Cancel"
+                ],
+                y=[
+                    "No Cancel",
+                    "Cancel"
+                ],
+                title="🌲 Random Forest"
+            )
+
+            fig_cm_rf.update_layout(
+                template="plotly_dark",
+                paper_bgcolor="#0E1117",
+                plot_bgcolor="#0E1117",
+                font=dict(
+                    color="#FFFFFF",
+                    size=14
+                ),
+                title_font=dict(
+                    color="#FFFFFF",
+                    size=20
+                )
+            )
+
+            st.plotly_chart(
+                fig_cm_rf,
+>>>>>>> upstream/main
                 width="stretch"
             )
 
     else:
 
         st.info(
+<<<<<<< HEAD
             "📂 Suba dataset con is_canceled para evaluar métricas."
         )
 
 # =========================================================
 # TAB 3
+=======
+            "📂 Suba dataset con is_canceled."
+        )
+
+# =========================================================
+# TAB 3 - BUSINESS VALUE
+>>>>>>> upstream/main
 # =========================================================
 
 with tab3:
 
     st.subheader(
+<<<<<<< HEAD
         "📋 Predicciones"
     )
 
@@ -1134,6 +1754,613 @@ with tab3:
         "predicciones.csv",
         "text/csv"
     )
+=======
+        "💰 Business Value"
+    )
+
+    if y_eval is not None:
+
+        bv_xgb = calcular_business_value(
+            y_eval,
+            y_pred_xgb
+        )
+
+        bv_rf = calcular_business_value(
+            y_eval,
+            y_pred_rf
+        )
+
+        # ==========================
+        # TABLA COMPARATIVA
+        # ==========================
+
+        comparison_bv = pd.DataFrame({
+
+            "Concepto": [
+                "True Positives",
+                "False Positives",
+                "False Negatives",
+                "Gain Unitario",
+                "Business Value"
+            ],
+
+            "XGBoost": [
+                bv_xgb["TP"],
+                bv_xgb["FP"],
+                bv_xgb["FN"],
+                bv_xgb["Gain"],
+                bv_xgb["Business Value"]
+            ],
+
+            "Random Forest": [
+                bv_rf["TP"],
+                bv_rf["FP"],
+                bv_rf["FN"],
+                bv_rf["Gain"],
+                bv_rf["Business Value"]
+            ]
+        })
+
+        st.dataframe(
+            comparison_bv,
+            width="stretch"
+        )
+
+        st.divider()
+
+        # ==========================
+        # IMPACTO ECONÓMICO COMPARATIVO
+        # ==========================
+
+        business_df = pd.DataFrame({
+
+            "Concepto": [
+                "Gain Total",
+                "Costo Operativo",
+                "Pérdida FN",
+                "Business Value",
+
+                "Gain Total",
+                "Costo Operativo",
+                "Pérdida FN",
+                "Business Value"
+            ],
+
+            "Valor": [
+
+                # XGBoost
+                bv_xgb["Gain"] * bv_xgb["TP"],
+
+                COSTO_FP * (
+                    bv_xgb["TP"]
+                    + bv_xgb["FP"]
+                ),
+
+                PERDIDA_FN * bv_xgb["FN"],
+
+                bv_xgb["Business Value"],
+
+                # Random Forest
+                bv_rf["Gain"] * bv_rf["TP"],
+
+                COSTO_FP * (
+                    bv_rf["TP"]
+                    + bv_rf["FP"]
+                ),
+
+                PERDIDA_FN * bv_rf["FN"],
+
+                bv_rf["Business Value"]
+            ],
+
+            "Modelo": [
+
+                "XGBoost",
+                "XGBoost",
+                "XGBoost",
+                "XGBoost",
+
+                "Random Forest",
+                "Random Forest",
+                "Random Forest",
+                "Random Forest"
+            ]
+        })
+
+        fig_bv = px.bar(
+
+            business_df,
+
+            x="Concepto",
+            y="Valor",
+
+            color="Modelo",
+
+            barmode="group",
+
+            template="plotly_dark",
+
+            text_auto=".2s"
+        )
+
+        fig_bv.update_layout(
+
+            title="💰 Comparación de Impacto Económico",
+
+            title_font=dict(
+                color="#FFFFFF",
+                size=24
+            ),
+
+            font=dict(
+                color="#FFFFFF",
+                size=14
+            ),
+
+            paper_bgcolor="#0E1117",
+            plot_bgcolor="#0E1117",
+
+            xaxis=dict(
+                title_font=dict(color="#FFFFFF"),
+                tickfont=dict(color="#FFFFFF")
+            ),
+
+            yaxis=dict(
+                title_font=dict(color="#FFFFFF"),
+                tickfont=dict(color="#FFFFFF")
+            ),
+
+            legend=dict(
+                font=dict(color="#FFFFFF")
+            )
+        )
+
+        fig_bv.update_traces(
+            textfont_color="#FFFFFF"
+        )
+
+        st.plotly_chart(
+            fig_bv,
+            width="stretch"
+        )
+
+        st.divider()
+
+        # ==========================
+        # GAUGES COMPARATIVOS
+        # ==========================
+
+        st.subheader(
+            "🚦 Comparación de Business Value"
+        )
+
+        col1, col2 = st.columns(2)
+
+        max_esperado = max(
+            abs(bv_xgb["Business Value"]),
+            abs(bv_rf["Business Value"]),
+            1
+        ) * 1.2
+
+        # =====================================================
+        # XGBOOST
+        # =====================================================
+
+        with col1:
+
+            fig_gauge_xgb = go.Figure(
+
+                go.Indicator(
+
+                    mode="gauge+number",
+
+                    value=bv_xgb["Business Value"],
+
+                    title={
+                        "text": "🚀 XGBoost",
+                        "font": {
+                            "size": 24,
+                            "color": "#FFFFFF"
+                        }
+                    },
+
+                    number={
+                        "prefix": "$",
+                        "font": {
+                            "size": 34,
+                            "color": "#FFFFFF"
+                        }
+                    },
+
+                    gauge={
+
+                        "axis": {
+                            "range": [
+                                -max_esperado,
+                                max_esperado
+                            ],
+                            "tickcolor": "#FFFFFF"
+                        },
+
+                        "bar": {
+                            "color": "#00CC96"
+                        },
+
+                        "bgcolor": "#1C2333",
+
+                        "steps": [
+
+                            {
+                                "range": [
+                                    -max_esperado,
+                                    0
+                                ],
+                                "color": "#EF553B"
+                            },
+
+                            {
+                                "range": [
+                                    0,
+                                    max_esperado * 0.5
+                                ],
+                                "color": "#FECB52"
+                            },
+
+                            {
+                                "range": [
+                                    max_esperado * 0.5,
+                                    max_esperado
+                                ],
+                                "color": "#00CC96"
+                            }
+                        ]
+                    }
+                )
+            )
+
+            fig_gauge_xgb.update_layout(
+
+                template="plotly_dark",
+
+                paper_bgcolor="#0E1117",
+
+                font={
+                    "color": "#FFFFFF"
+                },
+
+                height=400
+            )
+
+            st.plotly_chart(
+                fig_gauge_xgb,
+                width="stretch"
+            )
+
+        # =====================================================
+        # RANDOM FOREST
+        # =====================================================
+
+        with col2:
+
+            fig_gauge_rf = go.Figure(
+
+                go.Indicator(
+
+                    mode="gauge+number",
+
+                    value=bv_rf["Business Value"],
+
+                    title={
+                        "text": "🌲 Random Forest",
+                        "font": {
+                            "size": 24,
+                            "color": "#FFFFFF"
+                        }
+                    },
+
+                    number={
+                        "prefix": "$",
+                        "font": {
+                            "size": 34,
+                            "color": "#FFFFFF"
+                        }
+                    },
+
+                    gauge={
+
+                        "axis": {
+                            "range": [
+                                -max_esperado,
+                                max_esperado
+                            ],
+                            "tickcolor": "#FFFFFF"
+                        },
+
+                        "bar": {
+                            "color": "#636EFA"
+                        },
+
+                        "bgcolor": "#1C2333",
+
+                        "steps": [
+
+                            {
+                                "range": [
+                                    -max_esperado,
+                                    0
+                                ],
+                                "color": "#EF553B"
+                            },
+
+                            {
+                                "range": [
+                                    0,
+                                    max_esperado * 0.5
+                                ],
+                                "color": "#FECB52"
+                            },
+
+                            {
+                                "range": [
+                                    max_esperado * 0.5,
+                                    max_esperado
+                                ],
+                                "color": "#636EFA"
+                            }
+                        ]
+                    }
+                )
+            )
+
+            fig_gauge_rf.update_layout(
+
+                template="plotly_dark",
+
+                paper_bgcolor="#0E1117",
+
+                font={
+                    "color": "#FFFFFF"
+                },
+
+                height=400
+            )
+
+            st.plotly_chart(
+                fig_gauge_rf,
+                width="stretch"
+            )
+
+        st.divider()
+
+    # ==========================
+    # THRESHOLD OPTIMIZATION
+    # ==========================
+
+    st.subheader(
+        "📈 Optimización de Threshold"
+    )
+
+    # =====================================
+    # VALIDACIÓN
+    # =====================================
+
+    y_true = (
+        pd.Series(y_eval)
+        .fillna(0)
+        .astype(int)
+        .values
+    )
+
+    thresholds = np.arange(
+        0.05,
+        1.0,
+        0.05
+    )
+
+    business_values_xgb = []
+    business_values_rf = []
+
+    # =====================================
+    # XGBOOST
+    # =====================================
+
+    for t in thresholds:
+
+        pred_xgb_t = (
+            y_proba_xgb >= t
+        ).astype(int)
+
+        tn, fp, fn, tp = confusion_matrix(
+            y_eval,
+            pred_xgb_t
+        ).ravel()
+
+        gain_total = (
+            tp * BENEFICIO_TP
+        )
+
+        costo_total = (
+            tp + fp
+        ) * COSTO_FP
+
+        perdida_fn = (
+            fn * PERDIDA_FN
+        )
+
+        business_value = (
+            gain_total
+            - costo_total
+        )
+
+        if isinstance(business_value, np.ndarray):
+            business_value = business_value[0]
+
+        business_values_xgb.append(
+            float(business_value)
+        )
+
+    # =====================================
+    # RANDOM FOREST
+    # =====================================
+
+    for t in thresholds:
+
+        pred_rf_t = (
+            y_proba_rf >= t
+        ).astype(int)
+
+        tn, fp, fn, tp = confusion_matrix(
+            y_eval,
+            pred_rf_t
+        ).ravel()
+
+        gain_total = (
+            tp * BENEFICIO_TP
+        )
+
+        costo_total = (
+            tp + fp
+        ) * COSTO_FP
+
+        perdida_fn = (
+            fn * PERDIDA_FN
+        )
+
+        business_value = (
+            gain_total
+            - costo_total
+        )
+
+        if isinstance(business_value, np.ndarray):
+            business_value = business_value[0]
+
+        business_values_rf.append(
+            float(business_value)
+        )
+
+    # =====================================
+    # DATAFRAME FINAL
+    # =====================================
+
+    threshold_df = pd.DataFrame({
+
+        "Threshold": thresholds,
+
+        "Business Value XGBoost":
+            business_values_xgb,
+
+        "Business Value Random Forest":
+            business_values_rf
+    })
+
+    # =====================================
+    # GRÁFICO
+    # =====================================
+
+    fig_threshold = go.Figure()
+
+    fig_threshold.add_trace(
+        go.Scatter(
+            x=threshold_df["Threshold"].tolist(),
+            y=threshold_df[
+                "Business Value XGBoost"
+            ].tolist(),
+            mode="lines+markers",
+            name="XGBoost"
+        )
+    )
+
+    fig_threshold.add_trace(
+        go.Scatter(
+            x=threshold_df["Threshold"].tolist(),
+            y=threshold_df[
+                "Business Value Random Forest"
+            ].tolist(),
+            mode="lines+markers",
+            name="Random Forest"
+        )
+    )
+
+    fig_threshold.update_layout(
+        template="plotly_dark",
+        title="📈 Threshold Optimization",
+        xaxis_title="Threshold",
+        yaxis_title="Business Value",
+        font=dict(
+            color="#FFFFFF",
+            size=14
+        ),
+        title_font=dict(
+            color="#FFFFFF",
+            size=22
+        )
+    )
+
+    st.plotly_chart(
+        fig_threshold,
+        width="stretch"
+    )
+
+    # ==========================================
+    # MEJORES THRESHOLDS
+    # ==========================================
+
+    best_idx_xgb = threshold_df[
+        "Business Value XGBoost"
+    ].idxmax()
+
+    best_threshold_xgb = threshold_df.loc[
+        best_idx_xgb,
+        "Threshold"
+    ]
+
+    best_bv_xgb = threshold_df.loc[
+        best_idx_xgb,
+        "Business Value XGBoost"
+    ]
+
+    best_idx_rf = threshold_df[
+        "Business Value Random Forest"
+    ].idxmax()
+
+    best_threshold_rf = threshold_df.loc[
+        best_idx_rf,
+        "Threshold"
+    ]
+
+    best_bv_rf = threshold_df.loc[
+        best_idx_rf,
+        "Business Value Random Forest"
+    ]
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.success(
+            f"""
+            🎯 XGBoost
+
+            Threshold óptimo: {best_threshold_xgb:.2f}
+
+            Business Value esperado:
+            ${best_bv_xgb:,.0f}
+            """
+        )
+
+    with col2:
+
+        st.success(
+            f"""
+            🌲 Random Forest
+
+            Threshold óptimo: {best_threshold_rf:.2f}
+
+            Business Value esperado:
+            ${best_bv_rf:,.0f}
+            """
+        )
+>>>>>>> upstream/main
 
 # =========================================================
 # TAB 4
@@ -1142,6 +2369,7 @@ with tab3:
 with tab4:
 
     st.subheader(
+<<<<<<< HEAD
         "🔍 Explainability con SHAP"
     )
 
@@ -1204,3 +2432,219 @@ with tab4:
         st.warning(
             f"⚠️ Error SHAP: {e}"
         )
+=======
+        "📋 Predicciones"
+    )
+
+    st.subheader("XGBoost")
+
+    st.dataframe(
+        results_xgb.head(100),
+        width="stretch"
+    )
+
+    st.divider()
+
+    st.subheader("Random Forest")
+
+    st.dataframe(
+        results_rf.head(100),
+        width="stretch"
+    )
+
+    csv = results_xgb.to_csv(   
+        index=False
+    ).encode("utf-8")
+
+    st.download_button(
+        "⬇ Descargar predicciones XGBoost",
+        csv,
+        "predicciones_xgb.csv",
+        "text/csv"
+    )
+
+    csv_rf = results_rf.to_csv(
+        index=False
+    ).encode("utf-8")
+
+    st.download_button(
+        "⬇ Descargar predicciones Random Forest",
+        csv_rf,
+        "predicciones_rf.csv",
+        "text/csv"
+    )
+
+# =========================================================
+# TAB 5
+# =========================================================
+
+with tab5:
+
+    st.subheader(
+        "🔍 Explainability Comparativo"
+    )
+
+    tabs_shap = st.tabs([
+        "XGBoost",
+        "Random Forest"
+    ])
+
+    # =====================================================
+    # XGBOOST SHAP
+    # =====================================================
+
+    with tabs_shap[0]:
+
+        st.markdown("## 🚀 XGBoost SHAP")
+
+        try:
+
+            preprocessor_xgb = xgb_model.named_steps[
+                "preprocessor"
+            ]
+
+            clf_xgb = xgb_model.named_steps[
+                "clf"
+            ]
+
+            X_transformed_xgb = (
+                preprocessor_xgb.transform(X_eval)
+            )
+
+            feature_names_xgb = (
+                preprocessor_xgb.get_feature_names_out()
+            )
+
+            feature_names_xgb = [
+                col.replace("num__", "")
+                   .replace("cat__", "")
+                for col in feature_names_xgb
+            ]
+
+            X_transformed_df_xgb = pd.DataFrame(
+                X_transformed_xgb,
+                columns=feature_names_xgb
+            )
+
+            sample_shap_xgb = (
+                X_transformed_df_xgb.sample(
+                    min(300, len(X_transformed_df_xgb)),
+                    random_state=42
+                )
+            )
+
+            explainer_xgb = shap.TreeExplainer(
+                clf_xgb
+            )
+
+            shap_values_xgb = (
+                explainer_xgb.shap_values(
+                    sample_shap_xgb
+                )
+            )
+
+            fig_shap_xgb, ax = plt.subplots(
+                figsize=(12,8)
+            )
+
+            shap.summary_plot(
+                shap_values_xgb,
+                sample_shap_xgb,
+                show=False
+            )
+
+            st.pyplot(fig_shap_xgb)
+
+        except Exception as e:
+
+            st.warning(
+                f"⚠️ Error SHAP XGBoost: {e}"
+            )
+
+    # =====================================================
+    # RANDOM FOREST SHAP
+    # =====================================================
+
+    with tabs_shap[1]:
+
+        st.markdown("## 🌲 Random Forest SHAP")
+
+        try:
+
+            preprocessor_rf = rf_model.named_steps[
+                "preprocessor"
+            ]
+
+            clf_rf = rf_model.named_steps[
+                "clf"
+            ]
+
+            X_transformed_rf = (
+                preprocessor_rf.transform(X_eval)
+            )
+
+            feature_names_rf = (
+                preprocessor_rf.get_feature_names_out()
+            )
+
+            feature_names_rf = [
+                col.replace("num__", "")
+                   .replace("cat__", "")
+                for col in feature_names_rf
+            ]
+
+            X_transformed_df_rf = pd.DataFrame(
+                X_transformed_rf,
+                columns=feature_names_rf
+            )
+
+            sample_shap_rf = (
+                X_transformed_df_rf.sample(
+                    min(300, len(X_transformed_df_rf)),
+                    random_state=42
+                )
+            )
+
+            explainer_rf = shap.TreeExplainer(
+                clf_rf
+            )
+
+            shap_values_rf = explainer_rf(
+                sample_shap_rf
+            )
+
+# =====================================================
+# AJUSTE FORMATO RANDOM FOREST
+# =====================================================
+
+# pyrefly: ignore [missing-import]
+            import numpy as np
+
+# Caso lista
+            if isinstance(shap_values_rf, list):
+
+                shap_values_rf = shap_values_rf[1]
+
+# Caso array 3D
+            elif len(np.array(shap_values_rf).shape) == 3:
+
+                shap_values_rf = shap_values_rf[:, :, 1]
+
+            fig_shap_rf = plt.figure(
+                figsize=(12,8)
+            )
+
+            shap.plots.beeswarm(
+                shap_values_rf,
+                show=False
+            )
+
+            st.pyplot(fig_shap_rf)
+            plt.close()
+
+        except Exception as e:
+
+            st.warning(
+                f"⚠️ Error SHAP Random Forest: {e}"
+            )
+>>>>>>> upstream/main
