@@ -9,5 +9,4 @@ shap
 scikit-learn
 xgboost
 requests
-plotly
-plotly
+imbalanced-learn
