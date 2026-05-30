@@ -43,27 +43,17 @@ st.markdown("""
 
 .main {
     background-color: #0E1117;
-<<<<<<< HEAD
-    color: white;
-}
-
-h1, h2, h3, h4 {
-    color: white;
-=======
     color: #F8FAFC;
 }
 
 h1, h2, h3, h4 {
     color: #F8FAFC;
->>>>>>> upstream/main
 }
 
 [data-testid="stSidebar"] {
     background-color: #1E1E2F;
 }
 
-<<<<<<< HEAD
-=======
 /* Títulos sidebar */
 [data-testid="stSidebar"] h1,
 [data-testid="stSidebar"] h2,
@@ -76,7 +66,6 @@ h1, h2, h3, h4 {
     color: #F8FAFC !important;
 }
 
->>>>>>> upstream/main
 .kpi-card {
     background-color: #1C2333;
     padding: 20px;
@@ -93,11 +82,7 @@ h1, h2, h3, h4 {
 .kpi-value {
     font-size: 34px;
     font-weight: bold;
-<<<<<<< HEAD
-    color: white;
-=======
     color: #F8FAFC;
->>>>>>> upstream/main
 }
 
 .block-container {
@@ -126,20 +111,12 @@ h1, h2, h3, h4 {
     font-size: 22px;
     font-weight: bold;
     margin-bottom: 15px;
-<<<<<<< HEAD
-    color: white;
-=======
     color: #F8FAFC;
->>>>>>> upstream/main
 }
 .card-text {
     font-size: 16px;
     margin-bottom: 10px;
-<<<<<<< HEAD
-    color: white;
-=======
     color: #F8FAFC;
->>>>>>> upstream/main
 }
 
 </style>
@@ -173,50 +150,24 @@ st.markdown("""
         font-size: 22px;
         font-weight: bold;
         margin-bottom: 15px;
-<<<<<<< HEAD
-        color: white;
-=======
         color: #F8FAFC;
->>>>>>> upstream/main
     }
 
     .card-text {
         font-size: 16px;
         margin-bottom: 10px;
-<<<<<<< HEAD
-        color: white;
-=======
         color: #F8FAFC;
->>>>>>> upstream/main
     }
 
     </style>
     """, unsafe_allow_html=True)
 
 # =========================================================
-<<<<<<< HEAD
-# MODEL
-=======
 # MODELS
->>>>>>> upstream/main
 # =========================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-<<<<<<< HEAD
-MODEL_PATH = (
-    BASE_DIR
-    / "models"
-    / "final_pipeline.pkl"
-)
-
-@st.cache_resource
-def load_model():
-
-    return joblib.load(MODEL_PATH)
-
-model = load_model()
-=======
 XGB_MODEL_PATH = (
     BASE_DIR
     / "models"
@@ -232,7 +183,6 @@ RF_MODEL_PATH = (
 xgb_model = joblib.load(XGB_MODEL_PATH)
 
 rf_model = joblib.load(RF_MODEL_PATH)
->>>>>>> upstream/main
 
 # =========================================================
 # CLEANING
@@ -332,21 +282,6 @@ threshold = st.sidebar.slider(
     0.35
 )
 
-<<<<<<< HEAD
-st.sidebar.write(
-    f"Threshold actual: {threshold:.2f}"
-)
-
-st.sidebar.info("""
-Threshold bajos:
-↑ Recall
-↓ Precision
-
-Threshold altos:
-↓ Recall
-↑ Precision
-""")
-=======
 # =========================================================
 # BUSINESS PARAMETERS
 # =========================================================
@@ -382,7 +317,6 @@ BENEFICIO_TP = (
 )
 
 PERDIDA_FN = ADR_PROMEDIO
->>>>>>> upstream/main
 
 # =========================================================
 # HEADER
@@ -483,22 +417,14 @@ else:
             )
 
             lead_time = st.slider(
-<<<<<<< HEAD
-                "⏳ Lead Time",
-=======
                 "⏳ Lead Time - días entre reserva y llegada",
->>>>>>> upstream/main
                 0,
                 700,
                 120
             )
 
             adr = st.number_input(
-<<<<<<< HEAD
-                "💰 ADR",
-=======
                 "💰 ADR - Tarifa diaria promedio",
->>>>>>> upstream/main
                 0.0,
                 1000.0,
                 120.0
@@ -560,27 +486,6 @@ else:
 
             st.markdown("## 👤 Cliente")
 
-<<<<<<< HEAD
-            adults = st.slider(
-                "🧑 Adultos",
-                1,
-                5,
-                2
-            )
-
-            children = st.slider(
-                "🧒 Niños",
-                0,
-                4,
-                0
-            )
-
-            babies = st.slider(
-                "👶 Bebés",
-                0,
-                2,
-                0
-=======
             adults = st.number_input(
                 "🧑 Número de adultos",
                 min_value=1,
@@ -603,7 +508,6 @@ else:
                 max_value=20,
                 value=0,
                 step=1
->>>>>>> upstream/main
             )
 
             is_repeated_guest = st.selectbox(
@@ -801,106 +705,13 @@ else:
 # =========================================================
 # PREDICTIONS
 # =========================================================
-<<<<<<< HEAD
-import requests
-import os
-
-API_URL = os.getenv("API_URL", "http://34.204.98.17:8000")
-
-def api_disponible():
-    try:
-        r = requests.get(f"{API_URL}/health", timeout=5)
-        return r.status_code == 200
-    except Exception:
-        return False
-
-def predecir_con_api(df_input):
-    probabilidades = []
-    progress = st.progress(0)
-    total = len(df_input)
-    mes_map = {
-        "January":1,"February":2,"March":3,"April":4,
-        "May":5,"June":6,"July":7,"August":8,
-        "September":9,"October":10,"November":11,"December":12
-    }
-    for i, (_, row) in enumerate(df_input.iterrows()):
-        try:
-            mes_num = mes_map.get(str(row.get("arrival_date_month","January")), 1)
-            arrival_date = (
-                f"{int(row.get('arrival_date_year', 2017))}-"
-                f"{mes_num:02d}-"
-                f"{int(row.get('arrival_date_day_of_month', 1)):02d}"
-            )
-            payload = {
-                "hotel": str(row.get("hotel", "City Hotel")),
-                "lead_time": int(row.get("lead_time", 0)),
-                "arrival_date": arrival_date,
-                "stays_in_weekend_nights": int(row.get("stays_in_weekend_nights", 0)),
-                "stays_in_week_nights": int(row.get("stays_in_week_nights", 1)),
-                "adults": int(row.get("adults", 2)),
-                "children": int(row.get("children", 0) or 0),
-                "babies": int(row.get("babies", 0)),
-                "meal": str(row.get("meal", "BB")),
-                "market_segment": str(row.get("market_segment", "Online TA")),
-                "distribution_channel": str(row.get("distribution_channel", "TA/TO")),
-                "is_repeated_guest": int(row.get("is_repeated_guest", 0)),
-                "previous_cancellations": int(row.get("previous_cancellations", 0)),
-                "previous_bookings_not_canceled": int(row.get("previous_bookings_not_canceled", 0)),
-                "reserved_room_type": str(row.get("reserved_room_type", "A")),
-                "assigned_room_type": str(row.get("assigned_room_type", "A")),
-                "booking_changes": int(row.get("booking_changes", 0)),
-                "deposit_type": str(row.get("deposit_type", "No Deposit")),
-                "days_in_waiting_list": int(row.get("days_in_waiting_list", 0)),
-                "customer_type": str(row.get("customer_type", "Transient")),
-                "adr": float(row.get("adr", 100.0)),
-                "required_car_parking_spaces": int(row.get("required_car_parking_spaces", 0)),
-                "total_of_special_requests": int(row.get("total_of_special_requests", 0)),
-            }
-            resp = requests.post(f"{API_URL}/predict", json=payload, timeout=10)
-            resp.raise_for_status()
-            prob = resp.json().get("probability", 0.0)
-        except Exception:
-            prob = 0.0
-        probabilidades.append(prob)
-        progress.progress((i + 1) / total)
-    progress.empty()
-    return np.array(probabilidades)
-
-usar_api = api_disponible()
-
-if usar_api:
-    st.sidebar.success("✅ API activa — prediciendo con AWS")
-    df_para_api = df_original if 'df_original' in dir() else df_eval
-    y_proba = predecir_con_api(df_para_api)
-else:
-    st.sidebar.warning("⚠️ API no disponible — usando modelo local")
-    y_proba = model.predict_proba(X_eval)[:,1]
-
-y_pred = (
-    y_proba >= threshold
-).astype(int)
-
-# =========================================================
-# RESULTS
-# =========================================================
-
-results = X_eval.copy()
-
-results["Probabilidad"] = np.round(
-    y_proba,
-    3
-)
-
-results["Predicción"] = np.where(
-    y_pred == 1,
-=======
 
 import requests
 import os
 
 API_URL = os.getenv(
     "API_URL",
-    "http://34.204.98.17:8000"
+    "http://54.165.6.174:8000"
 )
 
 def api_disponible():
@@ -986,7 +797,6 @@ results_rf["Probabilidad"] = np.round(
 
 results_rf["Predicción"] = np.where(
     y_pred_rf == 1,
->>>>>>> upstream/main
     "❌ Cancelará",
     "✅ No cancelará"
 )
@@ -1006,15 +816,11 @@ def riesgo(p):
     else:
         return "🟢 Riesgo Bajo"
 
-<<<<<<< HEAD
-results["Nivel de Riesgo"] = results[
-=======
 results_xgb["Nivel de Riesgo"] = results_xgb[
     "Probabilidad"
 ].apply(riesgo)
 
 results_rf["Nivel de Riesgo"] = results_rf[
->>>>>>> upstream/main
     "Probabilidad"
 ].apply(riesgo)
 
@@ -1045,12 +851,6 @@ def accion_recomendada(r):
             "✅ Flujo normal de atención"
         )
 
-<<<<<<< HEAD
-results["Acción Recomendada"] = results[
-    "Nivel de Riesgo"
-].apply(accion_recomendada)
-
-=======
 results_xgb["Acción Recomendada"] = results_xgb[
     "Nivel de Riesgo"
 ].apply(accion_recomendada)
@@ -1089,7 +889,6 @@ def calcular_business_value(y_true, y_pred):
         "Business Value": business_value
     }
 
->>>>>>> upstream/main
 # =========================================================
 # COLORS
 # =========================================================
@@ -1104,16 +903,10 @@ risk_colors = {
 # TABS
 # =========================================================
 
-<<<<<<< HEAD
-tab1, tab2, tab3, tab4 = st.tabs([
-    "📈 Resumen Ejecutivo",
-    "🤖 Performance ML",
-=======
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📈 Resumen Ejecutivo",
     "🤖 Performance ML",
     "💰 Business Value",
->>>>>>> upstream/main
     "📋 Predicciones",
     "🔍 Explainability"
 ])
@@ -1124,35 +917,20 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 
 with tab1:
 
-<<<<<<< HEAD
-    total = len(results)
-
-    cancelaciones = (
-        results["Predicción"]
-=======
     total = len(results_xgb)
 
     cancelaciones = (
         results_xgb["Predicción"]
->>>>>>> upstream/main
         ==
         "❌ Cancelará"
     ).sum()
 
-<<<<<<< HEAD
-    riesgo_prom = results[
-=======
     riesgo_prom = results_xgb[
->>>>>>> upstream/main
         "Probabilidad"
     ].mean()
 
     pct_alto = (
-<<<<<<< HEAD
-        results["Nivel de Riesgo"]
-=======
         results_xgb["Nivel de Riesgo"]
->>>>>>> upstream/main
         ==
         "🔴 Riesgo Alto"
     ).mean() * 100
@@ -1194,29 +972,17 @@ with tab1:
     )
 
     alto = (
-<<<<<<< HEAD
-        results["Nivel de Riesgo"]
-=======
         results_xgb["Nivel de Riesgo"]
->>>>>>> upstream/main
         == "🔴 Riesgo Alto"
     ).sum()
 
     medio = (
-<<<<<<< HEAD
-        results["Nivel de Riesgo"]
-=======
         results_xgb["Nivel de Riesgo"]
->>>>>>> upstream/main
         == "🟡 Riesgo Medio"
     ).sum()
 
     bajo = (
-<<<<<<< HEAD
-        results["Nivel de Riesgo"]
-=======
         results_xgb["Nivel de Riesgo"]
->>>>>>> upstream/main
         == "🟢 Riesgo Bajo"
     ).sum()
 
@@ -1244,11 +1010,7 @@ with tab1:
     with col1:
 
         fig_hist = px.histogram(
-<<<<<<< HEAD
-            results,
-=======
             results_xgb,
->>>>>>> upstream/main
             x="Probabilidad",
             color="Nivel de Riesgo",
             template="plotly_dark",
@@ -1258,10 +1020,6 @@ with tab1:
 
         fig_hist.update_layout(
             title="📈 Distribución de Probabilidades",
-<<<<<<< HEAD
-            paper_bgcolor="#0E1117",
-            plot_bgcolor="#0E1117"
-=======
             title_x=0.25,
             paper_bgcolor="#0E1117",
             plot_bgcolor="#0E1117",
@@ -1281,38 +1039,22 @@ with tab1:
             legend=dict(
                 font=dict(color="#FFFFFF")
             )
->>>>>>> upstream/main
         )
 
         st.plotly_chart(
             fig_hist,
-<<<<<<< HEAD
-            width="stretch"
-=======
             use_container_width=True
->>>>>>> upstream/main
         )
 
     with col2:
 
         riesgo_counts = (
-<<<<<<< HEAD
-            results["Nivel de Riesgo"]
-=======
             results_xgb["Nivel de Riesgo"]
->>>>>>> upstream/main
             .value_counts()
             .reset_index()
         )
 
-<<<<<<< HEAD
-        riesgo_counts.columns = [
-            "Nivel de Riesgo",
-            "Cantidad"
-        ]
-=======
         riesgo_counts.columns = ["Nivel de Riesgo", "Cantidad"]
->>>>>>> upstream/main
 
         fig_pie = px.pie(
             riesgo_counts,
@@ -1326,9 +1068,6 @@ with tab1:
 
         fig_pie.update_layout(
             title="🥧 Distribución de Riesgo",
-<<<<<<< HEAD
-            paper_bgcolor="#0E1117"
-=======
             title_x=0.25,
             paper_bgcolor="#0E1117",
             font=dict(color="#FFFFFF", size=14),
@@ -1338,16 +1077,11 @@ with tab1:
 
         fig_pie.update_traces(
             textfont=dict(color="#0008ff", size=14)
->>>>>>> upstream/main
         )
 
         st.plotly_chart(
             fig_pie,
-<<<<<<< HEAD
-            width="stretch"
-=======
             use_container_width=True
->>>>>>> upstream/main
         )
 # =========================================================
 # TAB 2
@@ -1356,57 +1090,11 @@ with tab1:
 with tab2:
 
     st.subheader(
-<<<<<<< HEAD
-        "🤖 Performance del Modelo"
-=======
         "🤖 Comparación de Modelos"
->>>>>>> upstream/main
     )
 
     if y_eval is not None:
 
-<<<<<<< HEAD
-        accuracy = accuracy_score(
-            y_eval,
-            y_pred
-        )
-
-        recall = recall_score(
-            y_eval,
-            y_pred
-        )
-
-        f1 = f1_score(
-            y_eval,
-            y_pred
-        )
-
-        auc = roc_auc_score(
-            y_eval,
-            y_proba
-        )
-
-        col1, col2, col3, col4 = st.columns(4)
-
-        col1.metric(
-            "🎯 Accuracy",
-            f"{accuracy:.2%}"
-        )
-
-        col2.metric(
-            "📡 Recall",
-            f"{recall:.2%}"
-        )
-
-        col3.metric(
-            "⚖️ F1 Score",
-            f"{f1:.2%}"
-        )
-
-        col4.metric(
-            "📈 AUC ROC",
-            f"{auc:.2%}"
-=======
         # =====================================================
         # METRICS
         # =====================================================
@@ -1473,76 +1161,10 @@ with tab2:
                 "Random Forest":"{:.2%}"
             }),
             width="stretch"
->>>>>>> upstream/main
         )
 
         st.divider()
 
-<<<<<<< HEAD
-        col1, col2 = st.columns(2)
-
-        with col1:
-
-            cm = confusion_matrix(
-                y_eval,
-                y_pred
-            )
-
-            fig_cm = px.imshow(
-                cm,
-                text_auto=True,
-                color_continuous_scale="RdYlGn",
-                title="🧩 Confusion Matrix"
-            )
-
-            st.plotly_chart(
-                fig_cm,
-                width="stretch"
-            )
-
-        with col2:
-
-            fpr, tpr, _ = roc_curve(
-                y_eval,
-                y_proba
-            )
-
-            fig_roc = go.Figure()
-
-            fig_roc.add_trace(
-                go.Scatter(
-                    x=fpr,
-                    y=tpr,
-                    mode="lines",
-                    name=f"AUC = {auc:.3f}",
-                    line=dict(
-                        color="#00CC96",
-                        width=4
-                    )
-                )
-            )
-
-            fig_roc.add_trace(
-                go.Scatter(
-                    x=[0,1],
-                    y=[0,1],
-                    mode="lines",
-                    line=dict(
-                        dash="dash",
-                        color="#EF553B"
-                    ),
-                    showlegend=False
-                )
-            )
-
-            fig_roc.update_layout(
-                template="plotly_dark",
-                title="📈 ROC Curve"
-            )
-
-            st.plotly_chart(
-                fig_roc,
-=======
         # =====================================================
         # ROC CURVES
         # =====================================================
@@ -1710,51 +1332,22 @@ with tab2:
 
             st.plotly_chart(
                 fig_cm_rf,
->>>>>>> upstream/main
                 width="stretch"
             )
 
     else:
 
         st.info(
-<<<<<<< HEAD
-            "📂 Suba dataset con is_canceled para evaluar métricas."
-        )
-
-# =========================================================
-# TAB 3
-=======
             "📂 Suba dataset con is_canceled."
         )
 
 # =========================================================
 # TAB 3 - BUSINESS VALUE
->>>>>>> upstream/main
 # =========================================================
 
 with tab3:
 
     st.subheader(
-<<<<<<< HEAD
-        "📋 Predicciones"
-    )
-
-    st.dataframe(
-        results.head(100),
-        width="stretch"
-    )
-
-    csv = results.to_csv(
-        index=False
-    ).encode("utf-8")
-
-    st.download_button(
-        "⬇ Descargar predicciones",
-        csv,
-        "predicciones.csv",
-        "text/csv"
-    )
-=======
         "💰 Business Value"
     )
 
@@ -2360,7 +1953,6 @@ with tab3:
             ${best_bv_rf:,.0f}
             """
         )
->>>>>>> upstream/main
 
 # =========================================================
 # TAB 4
@@ -2369,70 +1961,6 @@ with tab3:
 with tab4:
 
     st.subheader(
-<<<<<<< HEAD
-        "🔍 Explainability con SHAP"
-    )
-
-    try:
-
-        preprocessor = model.named_steps[
-            "preprocessor"
-        ]
-
-        clf = model.named_steps[
-            "clf"
-        ]
-
-        X_transformed = preprocessor.transform(
-            X_eval
-        )
-
-        feature_names = (
-            preprocessor.get_feature_names_out()
-        )
-
-        feature_names = [
-            col.replace("num__", "")
-               .replace("cat__", "")
-            for col in feature_names
-        ]
-
-        X_transformed_df = pd.DataFrame(
-            X_transformed,
-            columns=feature_names
-        )
-
-        sample_shap = X_transformed_df.sample(
-            min(300, len(X_transformed_df)),
-            random_state=42
-        )
-
-        explainer = shap.TreeExplainer(
-            clf
-        )
-
-        shap_values = explainer.shap_values(
-            sample_shap
-        )
-
-        fig_shap, ax = plt.subplots(
-            figsize=(12,8)
-        )
-
-        shap.summary_plot(
-            shap_values,
-            sample_shap,
-            show=False
-        )
-
-        st.pyplot(fig_shap)
-
-    except Exception as e:
-
-        st.warning(
-            f"⚠️ Error SHAP: {e}"
-        )
-=======
         "📋 Predicciones"
     )
 
@@ -2647,4 +2175,3 @@ with tab5:
             st.warning(
                 f"⚠️ Error SHAP Random Forest: {e}"
             )
->>>>>>> upstream/main
