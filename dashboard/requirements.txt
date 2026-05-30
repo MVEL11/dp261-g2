@@ -6,7 +6,7 @@ seaborn
 plotly
 joblib
 shap
-scikit-learn==1.4.2
+scikit-learn==1.6.1
 xgboost
 requests
-imbalanced-learn==0.12.3
+imbalanced-learn==0.13.0
