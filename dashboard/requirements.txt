@@ -9,4 +9,4 @@ shap
 scikit-learn
 xgboost
 requests
-imbalanced-learn
+imbalanced-learn==0.12.4
